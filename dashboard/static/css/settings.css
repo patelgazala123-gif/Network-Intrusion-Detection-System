@@ -1,0 +1,424 @@
+/* =========================================
+   SETTINGS PAGE
+========================================= */
+
+.settings-page {
+    padding: 30px;
+    min-height: 100%;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.settings-header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.settings-header p {
+    margin: 7px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+.settings-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f7f8;
+    color: #0b6e79;
+    font-size: 22px;
+}
+
+
+/* =========================================
+   SETTINGS GRID
+========================================= */
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+
+/* =========================================
+   SETTINGS CARD
+========================================= */
+
+.settings-card {
+    background: #ffffff;
+    border: 1px solid #e6edf2;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 7px 22px rgba(30, 60, 90, 0.07);
+    transition: 0.3s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(30, 60, 90, 0.11);
+}
+
+
+/* =========================================
+   CARD HEADING
+========================================= */
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.heading-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.network-icon {
+    background: #e7f5f7;
+    color: #0b6e79;
+}
+
+.detection-icon {
+    background: #edf7ed;
+    color: #2e8b57;
+}
+
+.monitoring-icon {
+    background: #eef2ff;
+    color: #536dfe;
+}
+
+.theme-icon {
+    background: #fff5e6;
+    color: #e09b24;
+}
+
+.card-heading h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.card-heading p {
+    margin: 4px 0 0;
+    color: #7a8794;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.settings-card > label,
+.interval-box label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #344054;
+}
+
+.settings-card select,
+.interval-box select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #dce4ea;
+    border-radius: 10px;
+    background: #f9fbfc;
+    outline: none;
+    font-size: 14px;
+    color: #263238;
+    cursor: pointer;
+}
+
+.settings-card select:focus {
+    border-color: #0b6e79;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 15px;
+    border-top: 1px solid #edf1f4;
+    font-size: 13px;
+    color: #667085;
+}
+
+.status-active {
+    color: #249653;
+    font-weight: 600;
+}
+
+.status-active i {
+    font-size: 7px;
+    margin-right: 5px;
+}
+
+
+/* =========================================
+   SETTING OPTIONS
+========================================= */
+
+.setting-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #edf1f4;
+}
+
+.setting-option:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.setting-option h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.setting-option p {
+    margin: 5px 0 0;
+    color: #8a96a3;
+    font-size: 11px;
+}
+
+
+/* =========================================
+   TOGGLE SWITCH
+========================================= */
+
+.switch {
+    position: relative;
+    width: 48px;
+    height: 25px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd5df;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.switch input:checked + .slider {
+    background: #0b6e79;
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(23px);
+}
+
+
+/* =========================================
+   INTERVAL
+========================================= */
+
+.interval-box {
+    margin-top: 20px;
+}
+
+
+/* =========================================
+   THEME
+========================================= */
+
+.theme-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.theme-option {
+    cursor: pointer;
+}
+
+.theme-option input {
+    display: none;
+}
+
+.theme-content {
+    border: 2px solid #e3e9ee;
+    border-radius: 13px;
+    padding: 20px 10px;
+    text-align: center;
+    transition: 0.25s;
+}
+
+.theme-content i {
+    display: block;
+    font-size: 23px;
+    margin-bottom: 8px;
+    color: #718096;
+}
+
+.theme-content span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.theme-option input:checked + .theme-content {
+    border-color: #0b6e79;
+    background: #eefafb;
+    color: #0b6e79;
+}
+
+.theme-option input:checked + .theme-content i {
+    color: #0b6e79;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.settings-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-top: 28px;
+}
+
+.settings-actions button {
+    min-height: 85px;
+    border: none;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-align: left;
+}
+
+.settings-actions button i {
+    font-size: 24px;
+}
+
+.settings-actions button strong {
+    display: block;
+    font-size: 16px;
+}
+
+.settings-actions button small {
+    display: block;
+    margin-top: 5px;
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+
+/* RESET */
+
+.reset-btn {
+    background: #fff4f4;
+    color: #c53d3d;
+    border: 1px solid #ffdada !important;
+}
+
+.reset-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(197, 61, 61, 0.15);
+}
+
+
+/* SAVE */
+
+.save-btn {
+    background: #0b6e79;
+    color: white;
+    box-shadow: 0 8px 20px rgba(11, 110, 121, 0.22);
+}
+
+.save-btn:hover {
+    transform: translateY(-3px);
+    background: #07545d;
+    box-shadow: 0 12px 25px rgba(11, 110, 121, 0.3);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 850px) {
+
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .settings-page {
+        padding: 18px;
+    }
+
+    .settings-header h1 {
+        font-size: 25px;
+    }
+
+    .settings-card {
+        padding: 20px;
+    }
+
+    .theme-options {
+        grid-template-columns: 1fr;
+    }
+}

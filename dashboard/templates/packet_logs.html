@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Packet Logs
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================
+     PAGE HEADER
+========================================= -->
+
+<section class="logs-header">
+
+    <div>
+        <span class="page-label">NETWORK SECURITY</span>
+
+        <h1>Packet Logs</h1>
+
+        <p>
+            Review captured network packets and detected activity.
+        </p>
+    </div>
+
+    <button class="export-btn" id="exportLogs">
+        <i class="fas fa-download"></i>
+        Export Logs
+    </button>
+
+</section>
+
+
+<!-- =========================================
+     PACKET DISTRIBUTION
+========================================= -->
+
+<section class="packet-overview">
+
+    <div class="overview-heading">
+
+        <div>
+            <h3>Packet Distribution</h3>
+
+            <p>
+                Current packet classification
+            </p>
+        </div>
+
+        <span class="total-packets">
+            Total: <strong>24,650</strong>
+        </span>
+
+    </div>
+
+
+    <div class="distribution-bar">
+
+        <div class="distribution-safe"
+             style="width:78%;">
+        </div>
+
+        <div class="distribution-suspicious"
+             style="width:15%;">
+        </div>
+
+        <div class="distribution-threat"
+             style="width:7%;">
+        </div>
+
+    </div>
+
+
+    <div class="distribution-legend">
+
+        <div class="legend-item">
+
+            <span class="legend-dot safe-dot"></span>
+
+            <div>
+                <strong>Safe</strong>
+                <small>19,227 packets</small>
+            </div>
+
+        </div>
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot suspicious-dot"></span>
+
+            <div>
+                <strong>Suspicious</strong>
+                <small>3,698 packets</small>
+            </div>
+
+        </div>
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot threat-dot"></span>
+
+            <div>
+                <strong>Threat</strong>
+                <small>1,725 packets</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     PACKET HISTORY
+========================================= -->
+
+<section class="logs-card">
+
+    <div class="card-heading">
+
+        <div>
+            <h3>Packet History</h3>
+
+            <p>
+                Recently captured network packets
+            </p>
+        </div>
+
+
+        <div class="log-filter">
+
+            <i class="fas fa-filter"></i>
+
+            <select id="packetFilter">
+
+                <option value="all">
+                    All Packets
+                </option>
+
+                <option value="safe">
+                    Safe
+                </option>
+
+                <option value="suspicious">
+                    Suspicious
+                </option>
+
+                <option value="threat">
+                    Threat
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table id="logsTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Time</th>
+
+                    <th>Source IP</th>
+
+                    <th>Destination IP</th>
+
+                    <th>Protocol</th>
+
+                    <th>Port</th>
+
+                    <th>Length</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr data-status="safe">
+
+                    <td>10:25:42</td>
+
+                    <td>192.168.1.25</td>
+
+                    <td>10.0.0.12</td>
+
+                    <td>TCP</td>
+
+                    <td>443</td>
+
+                    <td>1.2 KB</td>
+
+                    <td>
+                        <span class="log-status safe">
+                            Safe
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr data-status="suspicious">
+
+                    <td>10:24:18</td>
+
+                    <td>172.16.0.15</td>
+
+                    <td>192.168.1.10</td>
+
+                    <td>UDP</td>
+
+                    <td>53</td>
+
+                    <td>640 B</td>
+
+                    <td>
+                        <span class="log-status suspicious">
+                            Suspicious
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr data-status="threat">
+
+                    <td>10:23:51</td>
+
+                    <td>10.0.0.8</td>
+
+                    <td>192.168.1.5</td>
+
+                    <td>TCP</td>
+
+                    <td>3306</td>
+
+                    <td>2.4 KB</td>
+
+                    <td>
+                        <span class="log-status threat">
+                            Threat
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr data-status="safe">
+
+                    <td>10:22:37</td>
+
+                    <td>192.168.0.55</td>
+
+                    <td>10.0.0.20</td>
+
+                    <td>HTTP</td>
+
+                    <td>80</td>
+
+                    <td>980 B</td>
+
+                    <td>
+                        <span class="log-status safe">
+                            Safe
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr data-status="safe">
+
+                    <td>10:21:12</td>
+
+                    <td>192.168.1.40</td>
+
+                    <td>172.16.0.5</td>
+
+                    <td>TCP</td>
+
+                    <td>22</td>
+
+                    <td>1.8 KB</td>
+
+                    <td>
+                        <span class="log-status safe">
+                            Safe
+                        </span>
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/packet_logs.css' %}">
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/packet_logs.js' %}"></script>
+
+{% endblock %}

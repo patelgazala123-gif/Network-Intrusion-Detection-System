@@ -1,0 +1,335 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}NIDS{% endblock %}</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+
+<body>
+
+<div class="app-container">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Logo -->
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+
+            <div class="logo-text">
+                <h2>NIDS</h2>
+                <span>Network Security</span>
+            </div>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+
+                <span class="nav-title">MAIN</span>
+
+                <a href="/"
+                   class="nav-item {% if request.path == '/' %}active{% endif %}">
+
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+
+                </a>
+
+
+                <a href="/live-monitoring"
+                   class="nav-item {% if request.path == '/live-monitoring' %}active{% endif %}">
+
+                    <i class="fas fa-network-wired"></i>
+                    <span>Live Monitoring</span>
+
+                </a>
+
+
+                <a href="/packet-logs"
+                   class="nav-item {% if request.path == '/packet-logs' %}active{% endif %}">
+
+                    <i class="fas fa-box"></i>
+                    <span>Packet Logs</span>
+
+                </a>
+
+
+                <a href="/threat-detection"
+                   class="nav-item {% if request.path == '/threat-detection' %}active{% endif %}">
+
+                    <i class="fas fa-radiation"></i>
+                    <span>Threat Detection</span>
+
+                </a>
+
+
+                <a href="/alerts"
+                   class="nav-item {% if request.path == '/alerts' %}active{% endif %}">
+
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <span>Alerts</span>
+
+                </a>
+
+
+                <a href="/reports"
+                   class="nav-item {% if request.path == '/reports' %}active{% endif %}">
+
+                    <i class="fas fa-chart-line"></i>
+                    <span>Reports</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- Settings -->
+
+            <div class="nav-section settings-section">
+
+                <span class="nav-title">SYSTEM</span>
+
+                <a href="/settings"
+                   class="nav-item {% if request.path == '/settings' %}active{% endif %}">
+
+                    <i class="fas fa-gear"></i>
+                    <span>Settings</span>
+
+                </a>
+
+            </div>
+
+        </nav>
+
+
+        <!-- Sidebar Bottom -->
+
+        <div class="sidebar-bottom">
+
+            <div class="monitor-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Active</strong>
+                    <small>Monitoring network</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================================
+         MAIN AREA
+    ========================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================
+             TOP BAR
+        ====================================== -->
+
+        <header class="topbar">
+
+
+            <!-- Mobile / Sidebar Toggle -->
+
+            <button class="sidebar-toggle" id="sidebarToggle">
+
+                <i class="fas fa-bars"></i>
+
+            </button>
+
+
+            <!-- Search -->
+
+            <div class="search-box" id="searchBox">
+
+                <i class="fas fa-search"></i>
+
+                <input
+                    type="text"
+                    id="globalSearch"
+                    placeholder="Search...">
+
+                <span class="search-shortcut">⌘ K</span>
+
+            </div>
+
+
+            <!-- Top Right -->
+
+            <div class="topbar-right">
+
+
+                <!-- Date / Time -->
+
+                <div class="datetime">
+
+                    <i class="far fa-clock"></i>
+
+                    <span id="datetime"></span>
+
+                </div>
+
+
+                <!-- Notification -->
+
+                <button class="notification-btn">
+
+                    <i class="far fa-bell"></i>
+
+                    <span class="notification-count">3</span>
+
+                </button>
+
+
+                <!-- Profile -->
+
+                <div class="profile">
+
+                    <div class="profile-image">
+
+                        <img
+                            src="{% static 'images/profile.png' %}"
+                            alt="Administrator">
+
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong>Administrator</strong>
+
+                        <span>Network Admin</span>
+
+                    </div>
+
+                    <i class="fas fa-chevron-down profile-arrow"></i>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================
+             PAGE CONTENT
+        ====================================== -->
+
+        <div class="page-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         FLOATING ACTION BUTTON
+    ========================================== -->
+
+    <div class="fab-container">
+
+        <div class="fab-actions" id="fabActions">
+
+            <button class="fab-action"
+                    title="Live Monitoring"
+                    onclick="window.location.href='/live-monitoring'">
+
+                <i class="fas fa-network-wired"></i>
+
+            </button>
+
+
+            <button class="fab-action"
+                    title="Alerts"
+                    onclick="window.location.href='/alerts'">
+
+                <i class="fas fa-triangle-exclamation"></i>
+
+            </button>
+
+
+            <button class="fab-action"
+                    title="Reports"
+                    onclick="window.location.href='/reports'">
+
+                <i class="fas fa-file-lines"></i>
+
+            </button>
+
+        </div>
+
+
+        <button class="fab-main" id="fabMain" title="Quick Actions">
+
+            <i class="fas fa-plus"></i>
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =========================================
+         BASE JS
+    ========================================== -->
+
+    <script src="{% static 'js/base.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+
+
+</body>
+
+</html>

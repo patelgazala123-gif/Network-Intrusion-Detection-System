@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+NIDS Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================================
+     DASHBOARD HEADER
+========================================= -->
+
+<section class="dashboard-header">
+
+    <div>
+        <span class="page-label">NETWORK SECURITY</span>
+
+        <h1>Dashboard</h1>
+
+        <p>
+            Monitor your network activity and security status.
+        </p>
+    </div>
+
+    <div class="monitor-status-badge">
+        <span></span>
+        Monitoring Active
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     OVERVIEW CARDS
+========================================= -->
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon packets">
+            <i class="fas fa-box"></i>
+        </div>
+
+        <div>
+            <span>Packets Captured</span>
+            <h2 id="packetCount">24,650</h2>
+            <small class="positive">
+                <i class="fas fa-arrow-up"></i> 8% today
+            </small>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon threats">
+            <i class="fas fa-triangle-exclamation"></i>
+        </div>
+
+        <div>
+            <span>Threats Detected</span>
+            <h2 id="threatCount">38</h2>
+            <small class="negative">
+                12 critical
+            </small>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon safe">
+            <i class="fas fa-shield-halved"></i>
+        </div>
+
+        <div>
+            <span>Safe Connections</span>
+            <h2>1,284</h2>
+            <small class="positive">
+                98% safe
+            </small>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon blocked">
+            <i class="fas fa-ban"></i>
+        </div>
+
+        <div>
+            <span>Blocked IPs</span>
+            <h2>19</h2>
+            <small class="negative">
+                Auto blocked
+            </small>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     TRAFFIC + SYSTEM STATUS
+========================================= -->
+
+<section class="dashboard-grid">
+
+    <!-- Network Traffic -->
+
+    <div class="dashboard-card traffic-card">
+
+        <div class="card-heading">
+
+            <div>
+                <h3>Network Traffic</h3>
+                <p>Traffic activity during the last 24 hours</p>
+            </div>
+
+            <select id="trafficRange">
+                <option>Last 24 Hours</option>
+                <option>Last 7 Days</option>
+            </select>
+
+        </div>
+
+        <div class="chart-container">
+            <canvas id="trafficChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- System Status -->
+
+    <div class="dashboard-card system-card">
+
+        <div class="card-heading">
+
+            <div>
+                <h3>System Status</h3>
+                <p>Current system resources</p>
+            </div>
+
+            <span class="system-online">
+                <span></span>
+                Online
+            </span>
+
+        </div>
+
+
+        <div class="resource-list">
+
+            <div class="resource-item">
+
+                <div class="resource-info">
+                    <span>CPU Usage</span>
+                    <strong>65%</strong>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar cpu"></div>
+                </div>
+
+            </div>
+
+
+            <div class="resource-item">
+
+                <div class="resource-info">
+                    <span>RAM Usage</span>
+                    <strong>48%</strong>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar ram"></div>
+                </div>
+
+            </div>
+
+
+            <div class="resource-item">
+
+                <div class="resource-info">
+                    <span>Storage</span>
+                    <strong>72%</strong>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar storage"></div>
+                </div>
+
+            </div>
+
+
+            <div class="resource-item">
+
+                <div class="resource-info">
+                    <span>Network Load</span>
+                    <strong>56%</strong>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar network"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     RECENT ALERTS
+========================================= -->
+
+<section class="dashboard-card alerts-card">
+
+    <div class="card-heading">
+
+        <div>
+            <h3>Recent Alerts</h3>
+            <p>Latest detected security events</p>
+        </div>
+
+        <a href="/alerts" class="view-link">
+            View All
+            <i class="fas fa-arrow-right"></i>
+        </a>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Time</th>
+                    <th>Attack Type</th>
+                    <th>Source IP</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>10:25 AM</td>
+
+                    <td>
+                        <span class="attack-name">
+                            DDoS
+                        </span>
+                    </td>
+
+                    <td>192.168.1.25</td>
+
+                    <td>
+                        <span class="severity high">
+                            High
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status blocked-status">
+                            Blocked
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>09:50 AM</td>
+
+                    <td>
+                        <span class="attack-name">
+                            Port Scan
+                        </span>
+                    </td>
+
+                    <td>172.16.0.15</td>
+
+                    <td>
+                        <span class="severity medium">
+                            Medium
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status detected-status">
+                            Detected
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>09:15 AM</td>
+
+                    <td>
+                        <span class="attack-name">
+                            SQL Injection
+                        </span>
+                    </td>
+
+                    <td>10.0.0.8</td>
+
+                    <td>
+                        <span class="severity critical">
+                            Critical
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status blocked-status">
+                            Blocked
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>08:40 AM</td>
+
+                    <td>
+                        <span class="attack-name">
+                            Brute Force
+                        </span>
+                    </td>
+
+                    <td>192.168.0.55</td>
+
+                    <td>
+                        <span class="severity low">
+                            Low
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status monitoring-status">
+                            Monitoring
+                        </span>
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/dashboard.css' %}">
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+{% endblock %}

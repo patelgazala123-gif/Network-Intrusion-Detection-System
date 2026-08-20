@@ -1,0 +1,479 @@
+/* =========================================
+   LIVE MONITORING HEADER
+========================================= */
+
+.monitor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    animation: slideDown 0.6s ease;
+}
+
+.monitor-header h1 {
+    font-size: 27px;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.monitor-header p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.live-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 15px;
+    border-radius: 20px;
+    background: #edfaf1;
+    color: #16a34a;
+    border: 1px solid #d8f3df;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+
+/* =========================================
+   LIVE METRICS
+========================================= */
+
+.live-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 17px;
+    margin-bottom: 20px;
+}
+
+.live-metric-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 18px 20px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    box-shadow: var(--shadow);
+
+    animation: cardAppear 0.6s ease both;
+    transition: 0.25s ease;
+}
+
+.live-metric-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.live-metric-card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.live-metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.metric-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 17px;
+}
+
+.live-metric-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.live-metric-card h2 {
+    margin-top: 2px;
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.threat-metric .metric-icon {
+    background: #fff0f0;
+    color: var(--red);
+}
+
+.threat-metric h2 {
+    color: var(--red);
+}
+
+
+/* =========================================
+   MAIN MONITORING AREA
+========================================= */
+
+.live-main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.monitor-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 21px;
+    box-shadow: var(--shadow);
+
+    animation: cardAppear 0.7s ease both;
+}
+
+.card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.card-heading h3 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.card-heading p {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+
+/* =========================================
+   LIVE TRAFFIC GRAPH
+========================================= */
+
+.live-chart-container {
+    height: 255px;
+    position: relative;
+}
+
+.traffic-live {
+    padding: 5px 9px;
+    border-radius: 15px;
+
+    background: #edfaf1;
+    color: #16a34a;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    animation: liveGlow 1.8s infinite;
+}
+
+
+/* =========================================
+   NETWORK ACTIVITY
+========================================= */
+
+.activity-monitor {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 175px;
+}
+
+.activity-ring {
+    width: 125px;
+    height: 125px;
+
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--primary);
+
+    position: relative;
+
+    animation: ringPulse 2s infinite;
+}
+
+.activity-ring i {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.activity-ring span {
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.activity-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.activity-details div {
+    padding: 11px;
+
+    background: #f8fafb;
+
+    border-radius: 10px;
+    text-align: center;
+}
+
+.activity-details span {
+    display: block;
+
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.activity-details strong {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 17px;
+}
+
+
+/* =========================================
+   LIVE PACKET FEED
+========================================= */
+
+.packet-monitor {
+    animation-delay: 0.15s;
+}
+
+.capture-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--green);
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.capture-status span {
+    width: 7px;
+    height: 7px;
+
+    background: var(--green);
+    border-radius: 50%;
+
+    animation: pulse 1.5s infinite;
+}
+
+.packet-feed {
+    display: flex;
+    flex-direction: column;
+}
+
+.packet-row {
+    display: grid;
+    grid-template-columns: 90px 1.5fr 80px 80px 100px;
+    align-items: center;
+
+    padding: 13px 10px;
+
+    border-bottom: 1px solid #f0f2f4;
+
+    font-size: 10px;
+
+    transition: 0.25s ease;
+
+    animation: packetAppear 0.5s ease both;
+}
+
+.packet-row:hover {
+    background: #f7fbfb;
+    transform: translateX(3px);
+}
+
+.packet-row:last-child {
+    border-bottom: none;
+}
+
+.packet-time {
+    color: var(--muted);
+}
+
+.packet-ip {
+    font-weight: 500;
+}
+
+.packet-protocol {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.packet-port {
+    color: var(--muted);
+}
+
+.packet-status {
+    width: fit-content;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    font-size: 8px;
+    font-weight: 600;
+}
+
+.packet-status.safe {
+    background: #edfaf1;
+    color: #16a34a;
+}
+
+.packet-status.suspicious {
+    background: #fff7e8;
+    color: #d97706;
+}
+
+.packet-status.threat {
+    background: #fff0f0;
+    color: var(--red);
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes packetAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.35);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+@keyframes ringPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(11, 110, 121, 0.2);
+    }
+
+    70% {
+        box-shadow: 0 0 0 14px rgba(11, 110, 121, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(11, 110, 121, 0);
+    }
+}
+
+@keyframes liveGlow {
+    50% {
+        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.08);
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .live-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .live-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .packet-row {
+        grid-template-columns: 75px 1.3fr 65px 65px 80px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .monitor-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .packet-row {
+        min-width: 550px;
+    }
+
+    .packet-monitor {
+        overflow-x: auto;
+    }
+}

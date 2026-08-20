@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Live Monitoring
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================
+     LIVE MONITORING HEADER
+========================================= -->
+
+<section class="monitor-header">
+
+    <div>
+        <span class="page-label">NETWORK SECURITY</span>
+        <h1>Live Monitoring</h1>
+        <p>Real-time network activity and packet detection.</p>
+    </div>
+
+    <div class="live-status">
+        <span class="live-dot"></span>
+        Monitoring Live
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     LIVE METRICS
+========================================= -->
+
+<section class="live-metrics">
+
+    <div class="live-metric-card">
+
+        <div class="metric-icon">
+            <i class="fas fa-wave-square"></i>
+        </div>
+
+        <div>
+            <span>Packets / Second</span>
+            <h2 class="count-number" data-target="124">0</h2>
+        </div>
+
+    </div>
+
+
+    <div class="live-metric-card">
+
+        <div class="metric-icon">
+            <i class="fas fa-link"></i>
+        </div>
+
+        <div>
+            <span>Active Connections</span>
+            <h2 class="count-number" data-target="86">0</h2>
+        </div>
+
+    </div>
+
+
+    <div class="live-metric-card threat-metric">
+
+        <div class="metric-icon">
+            <i class="fas fa-shield-virus"></i>
+        </div>
+
+        <div>
+            <span>Threats Detected</span>
+            <h2 class="count-number" data-target="38">0</h2>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     LIVE TRAFFIC + NETWORK ACTIVITY
+========================================= -->
+
+<section class="live-main-grid">
+
+    <!-- LIVE TRAFFIC -->
+
+    <div class="monitor-card traffic-monitor">
+
+        <div class="card-heading">
+
+            <div>
+                <h3>Live Network Traffic</h3>
+                <p>Real-time packet activity</p>
+            </div>
+
+            <span class="traffic-live">
+                LIVE
+            </span>
+
+        </div>
+
+        <div class="live-chart-container">
+            <canvas id="liveTrafficChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- NETWORK ACTIVITY -->
+
+    <div class="monitor-card activity-monitor">
+
+        <div class="card-heading">
+
+            <div>
+                <h3>Network Activity</h3>
+                <p>Current traffic status</p>
+            </div>
+
+        </div>
+
+
+        <div class="activity-visual">
+
+            <div class="activity-ring">
+
+                <i class="fas fa-network-wired"></i>
+
+                <span>ACTIVE</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="activity-details">
+
+            <div>
+                <span>Incoming</span>
+                <strong id="incomingPackets">72</strong>
+            </div>
+
+            <div>
+                <span>Outgoing</span>
+                <strong id="outgoingPackets">52</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     LIVE PACKET ACTIVITY
+========================================= -->
+
+<section class="monitor-card packet-monitor">
+
+    <div class="card-heading">
+
+        <div>
+            <h3>Live Packet Activity</h3>
+            <p>Latest packets detected by the system</p>
+        </div>
+
+        <div class="capture-status">
+            <span></span>
+            Capturing
+        </div>
+
+    </div>
+
+
+    <div class="packet-feed" id="packetFeed">
+
+        <div class="packet-row">
+
+            <span class="packet-time">10:25:42</span>
+
+            <span class="packet-ip">
+                192.168.1.25
+            </span>
+
+            <span class="packet-protocol">
+                TCP
+            </span>
+
+            <span class="packet-port">
+                :443
+            </span>
+
+            <span class="packet-status safe">
+                Safe
+            </span>
+
+        </div>
+
+
+        <div class="packet-row">
+
+            <span class="packet-time">10:25:39</span>
+
+            <span class="packet-ip">
+                172.16.0.15
+            </span>
+
+            <span class="packet-protocol">
+                UDP
+            </span>
+
+            <span class="packet-port">
+                :53
+            </span>
+
+            <span class="packet-status suspicious">
+                Suspicious
+            </span>
+
+        </div>
+
+
+        <div class="packet-row">
+
+            <span class="packet-time">10:25:35</span>
+
+            <span class="packet-ip">
+                10.0.0.8
+            </span>
+
+            <span class="packet-protocol">
+                TCP
+            </span>
+
+            <span class="packet-port">
+                :3306
+            </span>
+
+            <span class="packet-status threat">
+                Threat
+            </span>
+
+        </div>
+
+
+        <div class="packet-row">
+
+            <span class="packet-time">10:25:31</span>
+
+            <span class="packet-ip">
+                192.168.0.55
+            </span>
+
+            <span class="packet-protocol">
+                HTTP
+            </span>
+
+            <span class="packet-port">
+                :80
+            </span>
+
+            <span class="packet-status safe">
+                Safe
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/live_monitoring.css' %}">
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{% static 'js/live_monitoring.js' %}"></script>
+
+{% endblock %}
