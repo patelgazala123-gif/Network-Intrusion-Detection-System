@@ -3,23 +3,36 @@
 ========================================= */
 
 .logs-header {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     margin-bottom: 22px;
-    animation: fadeDown 0.55s ease;
+
+    animation: fadeDown 0.5s ease;
 }
+
 
 .logs-header h1 {
+
     font-size: 27px;
+
     font-weight: 600;
+
     margin-top: 3px;
 }
 
+
 .logs-header p {
+
     color: var(--muted);
+
     font-size: 12px;
-    margin-top: 3px;
+
+    margin-top: 4px;
 }
 
 
@@ -28,40 +41,55 @@
 ========================================= */
 
 .export-btn {
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
 
     padding: 10px 16px;
 
     border: none;
+
     border-radius: 9px;
 
     background: var(--primary);
+
     color: #fff;
 
     font-family: inherit;
+
     font-size: 10px;
+
     font-weight: 500;
 
     cursor: pointer;
 
-    transition: 0.25s ease;
+    transition: all 0.25s ease;
 }
 
+
 .export-btn:hover {
+
     background: var(--primary-dark);
+
     transform: translateY(-2px);
+
+    box-shadow: 0 5px 12px rgba(0,0,0,0.08);
 }
 
 
 /* =========================================
-   PACKET DISTRIBUTION
+   PACKET OVERVIEW
 ========================================= */
 
 .packet-overview {
+
     background: var(--white);
+
     border: 1px solid var(--border);
+
     border-radius: 17px;
 
     padding: 21px 23px;
@@ -70,35 +98,52 @@
 
     margin-bottom: 20px;
 
-    animation: fadeUp 0.6s ease;
+    animation: fadeUp 0.55s ease;
 }
 
+
 .overview-heading {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
     margin-bottom: 18px;
 }
 
+
 .overview-heading h3 {
+
     font-size: 16px;
+
     font-weight: 600;
 }
 
+
 .overview-heading p {
+
     color: var(--muted);
+
     font-size: 10px;
+
     margin-top: 3px;
 }
 
+
 .total-packets {
+
     color: var(--muted);
+
     font-size: 10px;
 }
 
+
 .total-packets strong {
+
     color: var(--text);
+
     font-size: 14px;
 }
 
@@ -108,7 +153,9 @@
 ========================================= */
 
 .distribution-bar {
+
     width: 100%;
+
     height: 15px;
 
     display: flex;
@@ -116,94 +163,127 @@
     overflow: hidden;
 
     background: #edf1f3;
+
     border-radius: 20px;
 }
 
+
 .distribution-bar div {
+
     height: 100%;
 
-    transform-origin: left;
-
-    animation: barGrow 1.2s ease;
+    transition:
+        width 0.5s ease;
 }
 
+
 .distribution-safe {
+
     background: var(--green);
 }
 
+
 .distribution-suspicious {
+
     background: var(--orange);
 }
 
+
 .distribution-threat {
+
     background: var(--red);
 }
 
 
 /* =========================================
-   DISTRIBUTION LEGEND
+   LEGEND
 ========================================= */
 
 .distribution-legend {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
 
-    gap: 20px;
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 25px;
 
     margin-top: 17px;
 }
 
+
 .legend-item {
+
     display: flex;
+
     align-items: center;
+
     gap: 9px;
 }
 
+
 .legend-dot {
+
     width: 9px;
+
     height: 9px;
 
     border-radius: 50%;
+
     flex-shrink: 0;
 }
 
+
 .safe-dot {
+
     background: var(--green);
 }
 
+
 .suspicious-dot {
+
     background: var(--orange);
 }
 
+
 .threat-dot {
+
     background: var(--red);
 }
 
+
 .legend-item strong {
+
     display: block;
 
     font-size: 10px;
+
     font-weight: 600;
 }
 
+
 .legend-item small {
+
     display: block;
 
-    margin-top: 2px;
+    margin-top: 3px;
 
     color: var(--muted);
+
     font-size: 9px;
 }
 
 
 /* =========================================
-   PACKET HISTORY CARD
+   LOG CARD
 ========================================= */
 
 .logs-card {
+
     background: var(--white);
 
     border: 1px solid var(--border);
+
     border-radius: 17px;
 
     padding: 21px;
@@ -213,23 +293,84 @@
     animation: fadeUp 0.7s ease;
 }
 
+
+/* =========================================
+   CARD HEADING
+========================================= */
+
 .card-heading {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
+    gap: 15px;
 
     margin-bottom: 18px;
 }
 
+
 .card-heading h3 {
+
     font-size: 17px;
+
     font-weight: 600;
 }
 
+
 .card-heading p {
+
     color: var(--muted);
+
     font-size: 10px;
+
     margin-top: 3px;
+}
+
+
+/* =========================================
+   LIVE INDICATOR
+========================================= */
+
+.live-indicator {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-left: auto;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    background: #edfaf1;
+
+    color: #16a34a;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+.live-indicator span {
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #16a34a;
+
+    animation: livePulse 1.2s infinite;
 }
 
 
@@ -238,24 +379,35 @@
 ========================================= */
 
 .log-filter {
+
     display: flex;
+
     align-items: center;
+
     gap: 7px;
 
-    padding: 6px 10px;
+    padding: 7px 10px;
 
     border: 1px solid var(--border);
+
     border-radius: 8px;
 
     color: var(--muted);
+
+    background: var(--white);
 }
 
+
 .log-filter i {
+
     font-size: 9px;
 }
 
+
 .log-filter select {
+
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -263,6 +415,7 @@
     color: var(--text);
 
     font-family: inherit;
+
     font-size: 10px;
 
     cursor: pointer;
@@ -270,37 +423,70 @@
 
 
 /* =========================================
-   TABLE
+   TABLE WRAPPER
 ========================================= */
 
 .table-wrapper {
+
     width: 100%;
+
     overflow-x: auto;
+
+    border: 1px solid #edf0f2;
+
+    border-radius: 12px;
 }
+
+
+/* =========================================
+   TABLE
+========================================= */
 
 #logsTable {
+
     width: 100%;
-    border-collapse: collapse;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    min-width: 850px;
 }
 
+
+/* =========================================
+   TABLE HEADER
+========================================= */
+
 #logsTable th {
-    padding: 12px 11px;
+
+    padding: 13px 15px;
 
     background: #fafbfc;
 
-    color: #8a939d;
+    color: #7b858f;
 
     border-bottom: 1px solid var(--border);
 
     font-size: 9px;
+
     font-weight: 600;
 
     text-align: left;
+
     white-space: nowrap;
+
+    letter-spacing: 0.2px;
 }
 
+
+/* =========================================
+   TABLE DATA
+========================================= */
+
 #logsTable td {
-    padding: 14px 11px;
+
+    padding: 15px;
 
     color: #4b5563;
 
@@ -309,19 +495,124 @@
     font-size: 10px;
 
     white-space: nowrap;
+
+    height: 48px;
 }
+
 
 #logsTable tbody tr {
-    transition: 0.2s ease;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.25s ease;
 }
+
 
 #logsTable tbody tr:hover {
+
     background: #f7fbfb;
-    transform: scale(1.002);
 }
 
+
 #logsTable tbody tr:last-child td {
+
     border-bottom: none;
+}
+
+
+/* =========================================
+   NEW PACKET ANIMATION
+========================================= */
+
+.new-packet {
+
+    animation:
+        packetEnter 0.65s ease;
+}
+
+
+@keyframes packetEnter {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateY(-25px);
+    }
+
+    60% {
+
+        opacity: 1;
+
+        transform:
+            translateY(5px);
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================
+   REMOVING OLD PACKET
+========================================= */
+
+.packet-remove {
+
+    animation:
+        packetLeave 0.35s ease forwards;
+}
+
+
+@keyframes packetLeave {
+
+    from {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+    to {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+    }
+}
+
+
+/* =========================================
+   PROTOCOL BADGE
+========================================= */
+
+.protocol-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    background: #f1f5f7;
+
+    color: #475569;
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
 }
 
 
@@ -330,30 +621,66 @@
 ========================================= */
 
 .log-status {
+
     display: inline-flex;
+
     align-items: center;
+
+    justify-content: center;
 
     padding: 4px 9px;
 
     border-radius: 20px;
 
     font-size: 8px;
+
     font-weight: 600;
 }
 
+
 .log-status.safe {
+
     background: #edfaf1;
+
     color: #16a34a;
 }
 
+
 .log-status.suspicious {
+
     background: #fff7e8;
+
     color: #d97706;
 }
 
+
 .log-status.threat {
+
     background: #fff0f0;
+
     color: var(--red);
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-row td {
+
+    text-align: center;
+
+    padding: 35px !important;
+
+    color: var(--muted) !important;
+}
+
+
+.empty-row i {
+
+    margin-right: 7px;
+
+    font-size: 13px;
 }
 
 
@@ -362,36 +689,66 @@
 ========================================= */
 
 @keyframes fadeDown {
+
     from {
+
         opacity: 0;
-        transform: translateY(-8px);
+
+        transform:
+            translateY(-8px);
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
     }
 }
+
 
 @keyframes fadeUp {
+
     from {
+
         opacity: 0;
-        transform: translateY(12px);
+
+        transform:
+            translateY(12px);
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
     }
 }
 
-@keyframes barGrow {
-    from {
-        transform: scaleX(0);
+
+@keyframes livePulse {
+
+    0% {
+
+        opacity: 1;
+
+        transform: scale(1);
     }
 
-    to {
-        transform: scaleX(1);
+    50% {
+
+        opacity: 0.35;
+
+        transform: scale(1.5);
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1);
     }
 }
 
@@ -403,38 +760,56 @@
 @media (max-width: 700px) {
 
     .logs-header {
+
         align-items: flex-start;
+
         flex-direction: column;
+
         gap: 12px;
     }
 
     .export-btn {
+
         width: 100%;
+
         justify-content: center;
     }
 
     .distribution-legend {
+
         grid-template-columns: 1fr;
+
         gap: 10px;
     }
 
     .overview-heading {
+
         align-items: flex-start;
+
         flex-direction: column;
+
         gap: 8px;
     }
 
     .card-heading {
+
         align-items: flex-start;
-        flex-direction: column;
-        gap: 12px;
+
+        flex-wrap: wrap;
+    }
+
+    .live-indicator {
+
+        margin-left: 0;
     }
 
     .log-filter {
+
         width: 100%;
     }
 
     .log-filter select {
+
         width: 100%;
     }
 }

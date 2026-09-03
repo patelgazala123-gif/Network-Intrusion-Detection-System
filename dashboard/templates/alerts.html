@@ -1,4 +1,3 @@
-```html
 {% extends 'base.html' %}
 {% load static %}
 
@@ -14,7 +13,9 @@
         <div>
             <span class="section-label">SECURITY CENTER</span>
             <h1>Alerts</h1>
-            <p>Review, prioritize and respond to security notifications.</p>
+            <p>
+                Review, prioritize and respond to security notifications.
+            </p>
         </div>
 
         <div class="alert-system-status">
@@ -31,6 +32,7 @@
         <div class="priority-content">
 
             <span class="section-label">PRIORITY STATUS</span>
+
             <h2>Attention Required</h2>
 
             <p>
@@ -53,77 +55,100 @@
 
 
         <div class="priority-score">
+
             <span>Priority</span>
-            <strong id="priorityScore">68</strong>
-            <small>Moderate</small>
+
+            <strong id="priorityScore">
+
+                {% if critical_count > 0 %}
+                    Critical
+
+                {% elif high_count > 0 %}
+                    High
+
+                {% elif medium_count > 0 %}
+                    Moderate
+
+                {% else %}
+                    Low
+                {% endif %}
+
+            </strong>
+
+            <small>
+                {{ total_alerts }}
+                total alert{{ total_alerts|pluralize }}
+            </small>
+
         </div>
 
     </section>
 
 
-    <!-- VISUAL ANALYSIS -->
-    <section class="alert-visuals">
+    <!-- ALERT TIMELINE -->
+    <section class="visual-card activity-card">
 
-        <div class="visual-card">
+        <div class="card-title">
 
-            <div class="card-title">
-                <div>
-                    <span class="section-label">SEVERITY</span>
-                    <h2>Alert Distribution</h2>
-                </div>
+            <div>
+                <span class="section-label">RECENT ACTIVITY</span>
+                <h2>Alert Timeline</h2>
             </div>
 
-            <div class="severity-chart">
-                <canvas id="severityChart"></canvas>
-            </div>
+            <span class="timeline-period">Recent</span>
 
         </div>
 
 
-        <div class="visual-card activity-card">
+        <div class="timeline">
 
-            <div class="card-title">
+            <div class="timeline-line"></div>
+
+
+            {% for alert in timeline_alerts %}
+
+            <div class="timeline-event {{ alert.severity|lower }}">
+
+                <span class="event-dot"></span>
 
                 <div>
-                    <span class="section-label">RECENT ACTIVITY</span>
-                    <h2>Alert Timeline</h2>
-                </div>
 
-                <span class="timeline-period">Today</span>
+                    <strong>
+                        {{ alert.attack_type }}
+                    </strong>
 
-            </div>
+                    <p>
+                        {{ alert.severity }}
+                        severity alert detected
+                    </p>
 
-            <div class="timeline">
-                <div class="timeline-line"></div>
+                    <small>
+                        {{ alert.timestamp|date:"H:i:s" }}
+                    </small>
 
-                <div class="timeline-event critical">
-                    <span class="event-dot"></span>
-                    <div>
-                        <strong>Critical alert triggered</strong>
-                        <p>Possible brute-force activity detected</p>
-                        <small>16:02</small>
-                    </div>
-                </div>
-
-                <div class="timeline-event high">
-                    <span class="event-dot"></span>
-                    <div>
-                        <strong>High-priority alert</strong>
-                        <p>Unusual traffic pattern identified</p>
-                        <small>15:47</small>
-                    </div>
-                </div>
-
-                <div class="timeline-event medium">
-                    <span class="event-dot"></span>
-                    <div>
-                        <strong>Medium alert generated</strong>
-                        <p>Repeated connection attempts observed</p>
-                        <small>15:31</small>
-                    </div>
                 </div>
 
             </div>
+
+            {% empty %}
+
+            <div class="timeline-event">
+
+                <span class="event-dot"></span>
+
+                <div>
+
+                    <strong>No recent alerts</strong>
+
+                    <p>
+                        No security events detected yet.
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
 
         </div>
 
@@ -140,204 +165,136 @@
                 <h2>Alert Feed</h2>
             </div>
 
-            <button class="clear-btn" onclick="clearResolved()">
-                Clear Resolved
-            </button>
-
         </div>
 
 
         <div class="alert-feed">
 
-            <!-- ALERT 1 -->
-            <div class="alert-item critical-alert"
+            {% for alert in alerts %}
+
+            <div class="alert-item {{ alert.severity|lower }}-alert"
                  onclick="openAlert(this)">
 
+
+                <!-- ALERT ICON -->
+
                 <div class="alert-symbol">
-                    <i class="fas fa-exclamation"></i>
+
+                    {% if alert.severity|lower == "high" %}
+
+                        <i class="fas fa-exclamation"></i>
+
+                    {% elif alert.severity|lower == "medium" %}
+
+                        <i class="fas fa-bolt"></i>
+
+                    {% elif alert.severity|lower == "critical" %}
+
+                        <i class="fas fa-skull-crossbones"></i>
+
+                    {% else %}
+
+                        <i class="fas fa-info"></i>
+
+                    {% endif %}
+
                 </div>
+
+
+                <!-- ALERT INFORMATION -->
 
                 <div class="alert-main">
 
                     <div class="alert-title">
-                        <h3>Brute Force Activity</h3>
-                        <span class="severity critical">Critical</span>
-                    </div>
 
-                    <p>
-                        Multiple authentication failures detected.
-                    </p>
+                        <h3>
+                            {{ alert.attack_type }}
+                        </h3>
 
-                    <span class="alert-time">
-                        Just now
-                    </span>
-
-                </div>
-
-                <i class="fas fa-chevron-right alert-arrow"></i>
-
-                <div class="alert-details">
-
-                    <strong>Detection Rule</strong>
-                    <p>
-                        Repeated authentication attempts exceeded
-                        the configured threshold.
-                    </p>
-
-                    <strong>Recommended Response</strong>
-                    <p>
-                        Review the event and consider blocking the
-                        suspicious activity.
-                    </p>
-
-                    <button
-                        class="ack-btn"
-                        onclick="acknowledgeAlert(event, this)">
-                        Acknowledge
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ALERT 2 -->
-            <div class="alert-item high-alert"
-                 onclick="openAlert(this)">
-
-                <div class="alert-symbol">
-                    <i class="fas fa-bolt"></i>
-                </div>
-
-                <div class="alert-main">
-
-                    <div class="alert-title">
-                        <h3>Unusual Traffic Pattern</h3>
-                        <span class="severity high">High</span>
-                    </div>
-
-                    <p>
-                        Network behavior differs significantly
-                        from the normal traffic pattern.
-                    </p>
-
-                    <span class="alert-time">
-                        15 minutes ago
-                    </span>
-
-                </div>
-
-                <i class="fas fa-chevron-right alert-arrow"></i>
-
-                <div class="alert-details">
-
-                    <strong>Detection Rule</strong>
-                    <p>
-                        Traffic behavior exceeded the established
-                        anomaly threshold.
-                    </p>
-
-                    <strong>Recommended Response</strong>
-                    <p>
-                        Continue monitoring and investigate the
-                        associated activity.
-                    </p>
-
-                    <button
-                        class="ack-btn"
-                        onclick="acknowledgeAlert(event, this)">
-                        Acknowledge
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ALERT 3 -->
-            <div class="alert-item medium-alert"
-                 onclick="openAlert(this)">
-
-                <div class="alert-symbol">
-                    <i class="fas fa-info"></i>
-                </div>
-
-                <div class="alert-main">
-
-                    <div class="alert-title">
-                        <h3>Repeated Connection Attempts</h3>
-                        <span class="severity medium">Medium</span>
-                    </div>
-
-                    <p>
-                        Several consecutive connection attempts
-                        triggered a monitoring rule.
-                    </p>
-
-                    <span class="alert-time">
-                        32 minutes ago
-                    </span>
-
-                </div>
-
-                <i class="fas fa-chevron-right alert-arrow"></i>
-
-                <div class="alert-details">
-
-                    <strong>Detection Rule</strong>
-                    <p>
-                        Connection frequency exceeded the
-                        configured threshold.
-                    </p>
-
-                    <strong>Recommended Response</strong>
-                    <p>
-                        Keep the event under observation.
-                    </p>
-
-                    <button
-                        class="ack-btn"
-                        onclick="acknowledgeAlert(event, this)">
-                        Acknowledge
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- RESOLVED -->
-            <div class="alert-item resolved-alert"
-                 data-resolved="true"
-                 onclick="openAlert(this)">
-
-                <div class="alert-symbol">
-                    <i class="fas fa-check"></i>
-                </div>
-
-                <div class="alert-main">
-
-                    <div class="alert-title">
-                        <h3>Suspicious Request Resolved</h3>
-                        <span class="severity resolved">
-                            Resolved
+                        <span class="severity {{ alert.severity|lower }}">
+                            {{ alert.severity }}
                         </span>
+
                     </div>
 
+
                     <p>
-                        Previously generated alert has been
-                        successfully handled.
+                        Suspicious network activity detected
+                        by the NIDS security rules.
                     </p>
 
+
                     <span class="alert-time">
-                        1 hour ago
+                        {{ alert.timestamp }}
                     </span>
 
                 </div>
 
+
                 <i class="fas fa-chevron-right alert-arrow"></i>
 
+
+                <!-- ALERT DETAILS -->
+
+                <div class="alert-details">
+
+                    <strong>Source IP</strong>
+
+                    <p>
+                        {{ alert.source_ip }}
+                    </p>
+
+
+                    <strong>Status</strong>
+
+                    <p>
+                        {{ alert.status }}
+                    </p>
+
+
+                    <strong>Detection Rule</strong>
+
+                    <p>
+                        {{ alert.attack_type }}
+                        activity detected by the configured
+                        security rule.
+                    </p>
+
+
+                    <button
+                        class="ack-btn"
+                        onclick="acknowledgeAlert(event, this)">
+
+                        Acknowledge
+
+                    </button>
+
+                </div>
+
             </div>
+
+
+            {% empty %}
+
+            <div class="alert-item">
+
+                <div class="alert-main">
+
+                    <div class="alert-title">
+
+                        <h3>No security alerts</h3>
+
+                    </div>
+
+                    <p>
+                        No threats have been detected yet.
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
 
         </div>
 
@@ -346,12 +303,15 @@
 </div>
 
 
+<!-- ALERT PAGE CSS -->
+
 <link rel="stylesheet"
       href="{% static 'css/alerts.css' %}">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- ALERT PAGE JAVASCRIPT -->
 
 <script src="{% static 'js/alerts.js' %}"></script>
 
+
 {% endblock %}
-```

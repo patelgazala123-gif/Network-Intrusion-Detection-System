@@ -1,46 +1,117 @@
-from datetime import datetime
-from scapy.all import IP, TCP, UDP
+from django.utils import timezone
+from scapy.all import IP, TCP, UDP, ICMP, ARP
 
 
 def analyze_packet(packet):
-    # Make sure packet contains an IP layer
+
+    # =====================================================
+    # ARP PACKET
+    # =====================================================
+
+    if ARP in packet:
+
+        data = {
+            "timestamp": timezone.now(),
+            "source_ip": packet[ARP].psrc,
+            "destination_ip": packet[ARP].pdst,
+            "protocol": "ARP",
+            "source_port": None,
+            "destination_port": None,
+            "packet_length": len(packet),
+
+            # TCP
+            "tcp_syn": False,
+
+            # ARP information
+            "arp_ip": packet[ARP].psrc,
+            "arp_mac": packet[ARP].hwsrc
+        }
+
+        return data
+
+
+    # =====================================================
+    # IP PACKET
+    # =====================================================
+
     if IP not in packet:
         return None
 
+
     data = {
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "timestamp": timezone.now(),
         "source_ip": packet[IP].src,
         "destination_ip": packet[IP].dst,
         "protocol": packet[IP].proto,
         "source_port": None,
         "destination_port": None,
-        "packet_length": len(packet)
+        "packet_length": len(packet),
+
+        # TCP SYN information
+        "tcp_syn": False,
+
+        # ARP fields
+        "arp_ip": None,
+        "arp_mac": None
     }
 
-    # TCP packet
+
+    # =====================================================
+    # TCP
+    # =====================================================
+
     if TCP in packet:
+
         data["protocol"] = "TCP"
+
         data["source_port"] = packet[TCP].sport
         data["destination_port"] = packet[TCP].dport
 
-    # UDP packet
+        # SYN flag
+        data["tcp_syn"] = "S" in str(packet[TCP].flags)
+
+
+    # =====================================================
+    # UDP
+    # =====================================================
+
     elif UDP in packet:
+
         data["protocol"] = "UDP"
+
         data["source_port"] = packet[UDP].sport
         data["destination_port"] = packet[UDP].dport
 
-    # Other IP protocols
+
+    # =====================================================
+    # ICMP
+    # =====================================================
+
+    elif ICMP in packet:
+
+        data["protocol"] = "ICMP"
+
+
+    # =====================================================
+    # OTHER IP PROTOCOL
+    # =====================================================
+
     else:
+
         data["protocol"] = str(packet[IP].proto)
+
 
     return data
 
 
 def display_packet(data):
+
     if data is None:
         return
 
+
     print("\n========== ANALYZED PACKET ==========")
+
     print("Time             :", data["timestamp"])
     print("Source IP        :", data["source_ip"])
     print("Destination IP   :", data["destination_ip"])
@@ -48,4 +119,14 @@ def display_packet(data):
     print("Source Port      :", data["source_port"])
     print("Destination Port :", data["destination_port"])
     print("Packet Length    :", data["packet_length"])
+
+    # Show SYN information for TCP
+    if data["protocol"] == "TCP":
+        print("TCP SYN          :", data["tcp_syn"])
+
+    # Show ARP information
+    if data["protocol"] == "ARP":
+        print("ARP IP           :", data["arp_ip"])
+        print("ARP MAC          :", data["arp_mac"])
+
     print("=====================================")

@@ -1,56 +1,8 @@
-```javascript
 /* =========================================
    ALERTS JAVASCRIPT
 ========================================= */
 
 
-/* SEVERITY CHART */
-
-const severityCanvas =
-    document.getElementById("severityChart");
-
-new Chart(severityCanvas, {
-
-    type: "doughnut",
-
-    data: {
-
-        labels: [
-            "Critical",
-            "High",
-            "Medium",
-            "Low"
-        ],
-
-        datasets: [{
-            data: [8, 15, 24, 13],
-            borderWidth: 0
-        }]
-    },
-
-    options: {
-
-        responsive: true,
-
-        maintainAspectRatio: false,
-
-        cutout: "68%",
-
-        plugins: {
-
-            legend: {
-                position: "bottom",
-
-                labels: {
-                    boxWidth: 9,
-                    font: {
-                        size: 10
-                    }
-                }
-            }
-        }
-    }
-});
 
 
 /* OPEN ALERT */
@@ -126,6 +78,8 @@ function simulateAlert() {
     const status =
         document.querySelector(".alert-system-status");
 
+    if (!status) return;
+
     status.style.transform =
         "scale(1.04)";
 
@@ -141,4 +95,3 @@ function simulateAlert() {
 /* START LIVE EFFECT */
 
 setInterval(simulateAlert, 5000);
-```

@@ -14,7 +14,9 @@ Packet Logs
 <section class="logs-header">
 
     <div>
-        <span class="page-label">NETWORK SECURITY</span>
+        <span class="page-label">
+            NETWORK SECURITY
+        </span>
 
         <h1>Packet Logs</h1>
 
@@ -24,8 +26,11 @@ Packet Logs
     </div>
 
     <button class="export-btn" id="exportLogs">
+
         <i class="fas fa-download"></i>
+
         Export Logs
+
     </button>
 
 </section>
@@ -40,15 +45,22 @@ Packet Logs
     <div class="overview-heading">
 
         <div>
+
             <h3>Packet Distribution</h3>
 
             <p>
                 Current packet classification
             </p>
+
         </div>
 
         <span class="total-packets">
-            Total: <strong>24,650</strong>
+
+            Total:
+            <strong id="totalPackets">
+                {{ total_packets }}
+            </strong>
+
         </span>
 
     </div>
@@ -56,16 +68,22 @@ Packet Logs
 
     <div class="distribution-bar">
 
-        <div class="distribution-safe"
-             style="width:78%;">
+        <div
+            id="safeBar"
+            class="distribution-safe"
+            style="width: 100%;">
         </div>
 
-        <div class="distribution-suspicious"
-             style="width:15%;">
+        <div
+            id="suspiciousBar"
+            class="distribution-suspicious"
+            style="width: 0%;">
         </div>
 
-        <div class="distribution-threat"
-             style="width:7%;">
+        <div
+            id="threatBar"
+            class="distribution-threat"
+            style="width: 0%;">
         </div>
 
     </div>
@@ -73,37 +91,59 @@ Packet Logs
 
     <div class="distribution-legend">
 
+
+        <!-- SAFE -->
+
         <div class="legend-item">
 
             <span class="legend-dot safe-dot"></span>
 
             <div>
+
                 <strong>Safe</strong>
-                <small>19,227 packets</small>
+
+                <small id="safeCount">
+                    0 packets
+                </small>
+
             </div>
 
         </div>
 
+
+        <!-- SUSPICIOUS -->
 
         <div class="legend-item">
 
             <span class="legend-dot suspicious-dot"></span>
 
             <div>
+
                 <strong>Suspicious</strong>
-                <small>3,698 packets</small>
+
+                <small id="suspiciousCount">
+                    0 packets
+                </small>
+
             </div>
 
         </div>
 
+
+        <!-- THREAT -->
 
         <div class="legend-item">
 
             <span class="legend-dot threat-dot"></span>
 
             <div>
+
                 <strong>Threat</strong>
-                <small>1,725 packets</small>
+
+                <small id="threatCount">
+                    0 packets
+                </small>
+
             </div>
 
         </div>
@@ -122,11 +162,22 @@ Packet Logs
     <div class="card-heading">
 
         <div>
+
             <h3>Packet History</h3>
 
             <p>
-                Recently captured network packets
+                Live recently captured network packets
             </p>
+
+        </div>
+
+
+        <div class="live-indicator">
+
+            <span></span>
+
+            LIVE
+
         </div>
 
 
@@ -159,6 +210,10 @@ Packet Logs
     </div>
 
 
+    <!-- =====================================
+         TABLE
+    ====================================== -->
+
     <div class="table-wrapper">
 
         <table id="logsTable">
@@ -175,7 +230,9 @@ Packet Logs
 
                     <th>Protocol</th>
 
-                    <th>Port</th>
+                    <th>Source Port</th>
+
+                    <th>Destination Port</th>
 
                     <th>Length</th>
 
@@ -186,121 +243,65 @@ Packet Logs
             </thead>
 
 
-            <tbody>
+            <tbody id="packetTableBody">
 
-                <tr data-status="safe">
+                {% for packet in packets %}
 
-                    <td>10:25:42</td>
+                <tr>
 
-                    <td>192.168.1.25</td>
+                    <td>
+                        {{ packet.timestamp|date:"H:i:s" }}
+                    </td>
 
-                    <td>10.0.0.12</td>
+                    <td>
+                        {{ packet.source_ip }}
+                    </td>
 
-                    <td>TCP</td>
+                    <td>
+                        {{ packet.destination_ip }}
+                    </td>
 
-                    <td>443</td>
+                    <td>
+                        <span class="protocol-badge">
+                            {{ packet.protocol }}
+                        </span>
+                    </td>
 
-                    <td>1.2 KB</td>
+                    <td>
+                        {{ packet.source_port|default:"-" }}
+                    </td>
+
+                    <td>
+                        {{ packet.destination_port|default:"-" }}
+                    </td>
+
+                    <td>
+                        {{ packet.packet_length }} B
+                    </td>
 
                     <td>
                         <span class="log-status safe">
-                            Safe
+                            Normal
                         </span>
                     </td>
 
                 </tr>
 
+                {% empty %}
 
-                <tr data-status="suspicious">
+                <tr class="empty-row">
 
-                    <td>10:24:18</td>
+                    <td colspan="8">
 
-                    <td>172.16.0.15</td>
+                        <i class="fas fa-box-open"></i>
 
-                    <td>192.168.1.10</td>
+                        No packets captured yet.
 
-                    <td>UDP</td>
-
-                    <td>53</td>
-
-                    <td>640 B</td>
-
-                    <td>
-                        <span class="log-status suspicious">
-                            Suspicious
-                        </span>
                     </td>
 
                 </tr>
 
-
-                <tr data-status="threat">
-
-                    <td>10:23:51</td>
-
-                    <td>10.0.0.8</td>
-
-                    <td>192.168.1.5</td>
-
-                    <td>TCP</td>
-
-                    <td>3306</td>
-
-                    <td>2.4 KB</td>
-
-                    <td>
-                        <span class="log-status threat">
-                            Threat
-                        </span>
-                    </td>
-
-                </tr>
-
-
-                <tr data-status="safe">
-
-                    <td>10:22:37</td>
-
-                    <td>192.168.0.55</td>
-
-                    <td>10.0.0.20</td>
-
-                    <td>HTTP</td>
-
-                    <td>80</td>
-
-                    <td>980 B</td>
-
-                    <td>
-                        <span class="log-status safe">
-                            Safe
-                        </span>
-                    </td>
-
-                </tr>
-
-
-                <tr data-status="safe">
-
-                    <td>10:21:12</td>
-
-                    <td>192.168.1.40</td>
-
-                    <td>172.16.0.5</td>
-
-                    <td>TCP</td>
-
-                    <td>22</td>
-
-                    <td>1.8 KB</td>
-
-                    <td>
-                        <span class="log-status safe">
-                            Safe
-                        </span>
-                    </td>
-
-                </tr>
+                {% endfor %}
 
             </tbody>
 
@@ -310,19 +311,23 @@ Packet Logs
 
 </section>
 
+
 {% endblock %}
 
 
 {% block extra_css %}
 
-<link rel="stylesheet"
-      href="{% static 'css/packet_logs.css' %}">
+<link
+    rel="stylesheet"
+    href="{% static 'css/packet_logs.css' %}">
 
 {% endblock %}
 
 
 {% block extra_js %}
 
-<script src="{% static 'js/packet_logs.js' %}"></script>
+<script
+    src="{% static 'js/packet_logs.js' %}">
+</script>
 
 {% endblock %}
