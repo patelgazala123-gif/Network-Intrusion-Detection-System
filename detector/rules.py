@@ -63,7 +63,7 @@ def check_rules(data):
     ]
 
     # More than 100 packets in 10 seconds
-    if len(packet_count[source_ip]) > 100:
+    if len(packet_count[source_ip]) > 50:
 
         if source_ip not in high_traffic_alerted:
 
@@ -100,39 +100,36 @@ def check_rules(data):
                     "severity": "High"
                 }
 
-
-    # =====================================================
-    # RULE 3: ICMP FLOOD
-    # =====================================================
+# =====================================================
+# RULE 3: ICMP FLOOD
+# =====================================================
 
     if protocol == "ICMP":
 
-        icmp_count[source_ip].append(current_time)
+    # Add current ICMP packet
+     icmp_count[source_ip].append(current_time)
 
-        # Keep only ICMP packets from last 10 seconds
-        icmp_count[source_ip] = [
-            t for t in icmp_count[source_ip]
-            if current_time - t <= 10
-        ]
+    # Keep only ICMP packets from last 10 seconds
+     icmp_count[source_ip] = [
+        t for t in icmp_count[source_ip]
+        if current_time - t <= 10
+     ]
 
-        
-        # More than 5 ICMP packets in 10 seconds
-        if len(icmp_count[source_ip]) > 50:
+    # More than 20 ICMP packets in 10 seconds
+    if len(icmp_count[source_ip]) > 20:
 
-            if source_ip not in icmp_flood_alerted:
+        if source_ip not in icmp_flood_alerted:
 
-                icmp_flood_alerted.add(source_ip)
+            icmp_flood_alerted.add(source_ip)
 
-                return {
-                    "attack_type": "ICMP Flood",
-                    "source_ip": source_ip,
-                    "severity": "High"
-                }
+            return {
+                "attack_type": "ICMP Flood",
+                "source_ip": source_ip,
+                "severity": "High"
+            }
 
-        else:
-            icmp_flood_alerted.discard(source_ip)
-
-
+    else:
+        icmp_flood_alerted.discard(source_ip)
     # =====================================================
     # RULE 4: SYN FLOOD
     # =====================================================
@@ -148,7 +145,7 @@ def check_rules(data):
         ]
 
         # More than 50 SYN packets in 10 seconds
-        if len(syn_count[source_ip]) > 50:
+        if len(syn_count[source_ip]) > 20:
 
             if source_ip not in syn_flood_alerted:
 
@@ -172,14 +169,14 @@ def check_rules(data):
 
         udp_count[source_ip].append(current_time)
 
-        # Keep only UDP packets from last 10 seconds
+        # Keep only UDP packets from the last 10 seconds
         udp_count[source_ip] = [
             t for t in udp_count[source_ip]
             if current_time - t <= 10
         ]
 
-        # More than 50 UDP packets in 10 seconds
-        if len(udp_count[source_ip]) > 50:
+        # More than 20 UDP packets in 10 seconds
+        if len(udp_count[source_ip]) > 20:
 
             if source_ip not in udp_flood_alerted:
 
@@ -191,40 +188,12 @@ def check_rules(data):
                     "severity": "High"
                 }
 
+            # Already detected → don't create another alert
+            return None
+
         else:
             udp_flood_alerted.discard(source_ip)
-
-
-    # =====================================================
-    # RULE 6: ARP SPOOFING
-    # =====================================================
-
-    arp_ip = data.get("arp_ip")
-    arp_mac = data.get("arp_mac")
-
-    if arp_ip is not None and arp_mac is not None:
-
-        # First time seeing this IP
-        if arp_ip not in arp_table:
-
-            arp_table[arp_ip] = arp_mac
-
-        # Same IP appears with a different MAC
-        elif arp_table[arp_ip] != arp_mac:
-
-            if arp_ip not in arp_spoof_alerted:
-
-                arp_spoof_alerted.add(arp_ip)
-
-                # Update mapping
-                arp_table[arp_ip] = arp_mac
-
-                return {
-                    "attack_type": "ARP Spoofing",
-                    "source_ip": source_ip,
-                    "severity": "Critical"
-                }
-
+            
 
     # =====================================================
     # NO THREAT

@@ -1,5 +1,7 @@
-from scapy.all import sniff, IP, ARP
+import threading
+from firewall_monitor import monitor_firewall
 
+from scapy.all import sniff, IP, ARP
 from analyzer import analyze_packet, display_packet
 from rules import check_rules
 from alerts import create_alert, display_alert
@@ -50,7 +52,17 @@ def start_capture():
     print("Capturing, analyzing and logging...")
     print("Press Ctrl+C to stop.\n")
 
+    # Start firewall monitoring in background
+    firewall_thread = threading.Thread(
+        target=monitor_firewall,
+        daemon=True
+    )
+
+    firewall_thread.start()
+
+    # Start packet capture
     sniff(
+        iface=r"\Device\NPF_Loopback",
         prn=process_packet,
         store=False
     )

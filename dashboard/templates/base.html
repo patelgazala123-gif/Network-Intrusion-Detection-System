@@ -14,8 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;500;600;700&display=swap"
-          rel="stylesheet">
+    
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -183,20 +182,22 @@
             </button>
 
 
+
             <!-- Search -->
 
-            <div class="search-box" id="searchBox">
+        <div class="search-box" id="searchBox">
 
-                <i class="fas fa-search"></i>
+            <i class="fas fa-search"></i>
 
-                <input
-                    type="text"
-                    id="globalSearch"
-                    placeholder="Search...">
+          <input
+          type="text"
+          id="globalSearch"
+          placeholder="Search..."
+          autocomplete="off">
 
-                <span class="search-shortcut">⌘ K</span>
+           <span class="search-shortcut">⌘ K</span>
 
-            </div>
+        </div>
 
 
             <!-- Top Right -->
@@ -217,14 +218,13 @@
 
                 <!-- Notification -->
 
-                <button class="notification-btn">
+                <a href="{% url 'alerts' %}" class="notification-btn">
 
-                    <i class="far fa-bell"></i>
+                  <i class="far fa-bell"></i>
 
-                    <span class="notification-count">3</span>
+                   
 
-                </button>
-
+                </a>
 
                 <!-- Profile -->
 

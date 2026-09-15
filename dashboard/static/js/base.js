@@ -4,6 +4,19 @@
 
 
 /* =========================================
+   GLOBAL THEME
+========================================= */
+
+const savedTheme = localStorage.getItem("nidsTheme") || "light";
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+} else {
+    document.body.classList.remove("dark-mode");
+}
+
+
+/* =========================================
    SIDEBAR TOGGLE
 ========================================= */
 
@@ -59,7 +72,8 @@ function updateDateTime() {
         minute: "2-digit"
     };
 
-    datetime.textContent = now.toLocaleString("en-IN", options);
+    datetime.textContent =
+        now.toLocaleString("en-IN", options);
 }
 
 updateDateTime();
@@ -73,11 +87,15 @@ setInterval(updateDateTime, 1000);
 
 document.addEventListener("keydown", (event) => {
 
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+    if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === "k"
+    ) {
 
         event.preventDefault();
 
-        const search = document.getElementById("globalSearch");
+        const search =
+            document.getElementById("globalSearch");
 
         if (search) {
             search.focus();
@@ -86,6 +104,24 @@ document.addEventListener("keydown", (event) => {
     }
 
 });
+
+
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+const notificationBtn =
+    document.querySelector(".notification-btn");
+
+if (notificationBtn) {
+
+    notificationBtn.addEventListener("click", () => {
+
+        window.location.href = "/alerts";
+
+    });
+
+}
 
 
 /* =========================================
@@ -106,5 +142,74 @@ document.addEventListener("click", (event) => {
         sidebar.classList.remove("open");
 
     }
+
+});
+/* =========================================
+   GLOBAL SEARCH
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const globalSearch =
+        document.getElementById("globalSearch");
+
+    if (!globalSearch) {
+        return;
+    }
+
+    globalSearch.addEventListener("keydown", function (event) {
+
+        if (event.key !== "Enter") {
+            return;
+        }
+
+        event.preventDefault();
+
+        const query =
+            globalSearch.value.trim().toLowerCase();
+
+        if (query === "") {
+            return;
+        }
+
+        const pages = {
+
+            "dashboard": "/",
+            "home": "/",
+
+            "live monitoring": "/live-monitoring/",
+            "monitoring": "/live-monitoring/",
+            "live": "/live-monitoring/",
+
+            "packet logs": "/packet-logs/",
+            "packet": "/packet-logs/",
+            "packets": "/packet-logs/",
+            "logs": "/packet-logs/",
+
+            "threat detection": "/threat-detection/",
+            "threat": "/threat-detection/",
+            "threats": "/threat-detection/",
+
+            "alerts": "/alerts/",
+            "alert": "/alerts/",
+
+            "reports": "/reports/",
+            "report": "/reports/",
+
+            "settings": "/settings/",
+            "setting": "/settings/"
+        };
+
+        if (pages[query]) {
+
+            window.location.assign(pages[query]);
+
+        } else {
+
+            alert("No matching page found.");
+
+        }
+
+    });
 
 });

@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 
 def create_alert(threat):
@@ -6,7 +6,7 @@ def create_alert(threat):
         return None
 
     alert = {
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "timestamp": timezone.now(),
         "attack_type": threat["attack_type"],
         "source_ip": threat["source_ip"],
         "severity": threat["severity"],
@@ -21,7 +21,7 @@ def display_alert(alert):
         return
 
     print("\n========== SECURITY ALERT ==========")
-    print("Time       :", alert["timestamp"])
+    print("Time       :", alert["timestamp"].strftime("%Y-%m-%d %H:%M:%S"))
     print("Attack     :", alert["attack_type"])
     print("Source IP  :", alert["source_ip"])
     print("Severity   :", alert["severity"])

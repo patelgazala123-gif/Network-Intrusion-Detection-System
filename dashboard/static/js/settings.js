@@ -1,148 +1,240 @@
-/* =========================================
-   SETTINGS PAGE JAVASCRIPT
-========================================= */
-
 document.addEventListener("DOMContentLoaded", function () {
+
+    const lightTheme = document.getElementById("lightTheme");
+    const darkTheme = document.getElementById("darkTheme");
 
     const saveBtn = document.getElementById("saveBtn");
     const resetBtn = document.getElementById("resetBtn");
 
-    const interfaceSelect = document.getElementById("interface");
-    const portScan = document.getElementById("portScan");
-    const suspiciousIP = document.getElementById("suspiciousIP");
-    const multipleConnection = document.getElementById("multipleConnection");
-    const autoStart = document.getElementById("autoStart");
-    const captureInterval = document.getElementById("captureInterval");
+    const clearLogsBtn = document.getElementById("clearLogsBtn");
+    const clearAlertsBtn = document.getElementById("clearAlertsBtn");
 
-    const themeOptions = document.querySelectorAll(
-        'input[name="theme"]'
-    );
+    const message = document.getElementById("settingsMessage");
 
 
     /* =========================================
-       SAVE SETTINGS
+       SHOW MESSAGE
     ========================================= */
 
-    saveBtn.addEventListener("click", function () {
+    function showMessage(text) {
 
-        const selectedTheme = document.querySelector(
-            'input[name="theme"]:checked'
-        ).value;
+        message.textContent = text;
+        message.style.display = "block";
 
-        const settings = {
-            interface: interfaceSelect.value,
-            portScan: portScan.checked,
-            suspiciousIP: suspiciousIP.checked,
-            multipleConnection: multipleConnection.checked,
-            autoStart: autoStart.checked,
-            captureInterval: captureInterval.value,
-            theme: selectedTheme
-        };
+        setTimeout(function () {
+            message.style.display = "none";
+        }, 2500);
+    }
 
-        localStorage.setItem(
-            "nidsSettings",
-            JSON.stringify(settings)
-        );
 
-        showMessage(
-            "Settings saved successfully!",
-            "success"
-        );
+    /* =========================================
+       APPLY THEME
+    ========================================= */
+
+    function applyTheme(theme) {
+
+        if (theme === "dark") {
+
+            document.body.classList.add("dark-mode");
+
+            darkTheme.checked = true;
+            lightTheme.checked = false;
+
+        } else {
+
+            document.body.classList.remove("dark-mode");
+
+            lightTheme.checked = true;
+            darkTheme.checked = false;
+        }
+    }
+
+
+    /* =========================================
+       LOAD SAVED THEME
+    ========================================= */
+
+    const savedTheme =
+        localStorage.getItem("nidsTheme") || "light";
+
+    applyTheme(savedTheme);
+
+
+    /* =========================================
+       THEME CHANGE
+    ========================================= */
+
+    lightTheme.addEventListener("change", function () {
+
+        if (this.checked) {
+
+            applyTheme("light");
+
+            showMessage("Light mode selected.");
+        }
+
+    });
+
+
+    darkTheme.addEventListener("change", function () {
+
+        if (this.checked) {
+
+            applyTheme("dark");
+
+            showMessage("Dark mode selected.");
+        }
+
     });
 
 
     /* =========================================
-       RESET SETTINGS
+       SAVE
+    ========================================= */
+
+    saveBtn.addEventListener("click", function () {
+
+        const selected =
+            document.querySelector(
+                'input[name="theme"]:checked'
+            );
+
+        if (!selected) {
+            return;
+        }
+
+        localStorage.setItem(
+            "nidsTheme",
+            selected.value
+        );
+
+        applyTheme(selected.value);
+
+        showMessage("Settings saved successfully.");
+
+    });
+
+
+    /* =========================================
+       RESET
     ========================================= */
 
     resetBtn.addEventListener("click", function () {
 
         const confirmReset = confirm(
-            "Are you sure you want to reset all settings to default?"
+            "Reset settings to default?"
         );
 
         if (!confirmReset) {
             return;
         }
 
-        interfaceSelect.value = "wifi";
+        localStorage.setItem(
+            "nidsTheme",
+            "light"
+        );
 
-        portScan.checked = true;
-        suspiciousIP.checked = true;
-        multipleConnection.checked = true;
-
-        autoStart.checked = false;
-
-        captureInterval.value = "1";
-
-        document.querySelector(
-            'input[name="theme"][value="light"]'
-        ).checked = true;
-
-        localStorage.removeItem("nidsSettings");
+        applyTheme("light");
 
         showMessage(
-            "Settings restored to default.",
-            "success"
+            "Settings restored to default."
         );
+
     });
 
 
     /* =========================================
-       LOAD SAVED SETTINGS
+       GET CSRF TOKEN
     ========================================= */
 
-    const savedSettings = localStorage.getItem("nidsSettings");
+    function getCSRFToken() {
 
-    if (savedSettings) {
+        const csrfInput =
+            document.querySelector(
+                '[name="csrfmiddlewaretoken"]'
+            );
 
-        const settings = JSON.parse(savedSettings);
-
-        interfaceSelect.value =
-            settings.interface || "wifi";
-
-        portScan.checked =
-            settings.portScan ?? true;
-
-        suspiciousIP.checked =
-            settings.suspiciousIP ?? true;
-
-        multipleConnection.checked =
-            settings.multipleConnection ?? true;
-
-        autoStart.checked =
-            settings.autoStart ?? false;
-
-        captureInterval.value =
-            settings.captureInterval || "1";
-
-        const savedTheme = settings.theme || "light";
-
-        const theme = document.querySelector(
-            `input[name="theme"][value="${savedTheme}"]`
-        );
-
-        if (theme) {
-            theme.checked = true;
+        if (csrfInput) {
+            return csrfInput.value;
         }
+
+        return "";
     }
 
 
     /* =========================================
-       THEME SELECTION
+       CLEAR PACKET LOGS
     ========================================= */
 
-    themeOptions.forEach(function (option) {
+    clearLogsBtn.addEventListener("click", function () {
 
-        option.addEventListener("change", function () {
+        const confirmClear = confirm(
+            "Are you sure you want to delete all packet logs?"
+        );
 
-            if (this.value === "dark") {
-                document.body.classList.add("settings-dark-preview");
-            } else {
-                document.body.classList.remove(
-                    "settings-dark-preview"
+        if (!confirmClear) {
+            return;
+        }
+
+        clearLogsBtn.disabled = true;
+
+        fetch("/clear-packet-logs/", {
+
+            method: "POST",
+
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "Content-Type": "application/json"
+            }
+
+        })
+
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error(
+                    "HTTP Error: " + response.status
                 );
             }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            if (data.success) {
+
+                showMessage(
+                    "Packet logs cleared successfully."
+                );
+
+            } else {
+
+                showMessage(
+                    data.message ||
+                    "Unable to clear packet logs."
+                );
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Clear packet logs error:",
+                error
+            );
+
+            showMessage(
+                "Unable to clear packet logs."
+            );
+
+        })
+
+        .finally(() => {
+
+            clearLogsBtn.disabled = false;
 
         });
 
@@ -150,43 +242,81 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       MESSAGE
+       CLEAR ALERT HISTORY
     ========================================= */
 
-    function showMessage(message, type) {
+    clearAlertsBtn.addEventListener("click", function () {
 
-        const oldMessage =
-            document.querySelector(".settings-message");
+        const confirmClear = confirm(
+            "Are you sure you want to delete all alert history?"
+        );
 
-        if (oldMessage) {
-            oldMessage.remove();
+        if (!confirmClear) {
+            return;
         }
 
-        const messageBox = document.createElement("div");
+        clearAlertsBtn.disabled = true;
 
-        messageBox.className =
-            "settings-message " + type;
+        fetch("/clear-alerts/", {
 
-        messageBox.innerHTML = `
-            <i class="fas fa-check-circle"></i>
-            <span>${message}</span>
-        `;
+            method: "POST",
 
-        document.body.appendChild(messageBox);
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "Content-Type": "application/json"
+            }
 
-        setTimeout(function () {
-            messageBox.classList.add("show");
-        }, 10);
+        })
 
-        setTimeout(function () {
+        .then(response => {
 
-            messageBox.classList.remove("show");
+            if (!response.ok) {
+                throw new Error(
+                    "HTTP Error: " + response.status
+                );
+            }
 
-            setTimeout(function () {
-                messageBox.remove();
-            }, 300);
+            return response.json();
 
-        }, 2500);
-    }
+        })
+
+        .then(data => {
+
+            if (data.success) {
+
+                showMessage(
+                    "Alert history cleared successfully."
+                );
+
+            } else {
+
+                showMessage(
+                    data.message ||
+                    "Unable to clear alert history."
+                );
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Clear alerts error:",
+                error
+            );
+
+            showMessage(
+                "Unable to clear alert history."
+            );
+
+        })
+
+        .finally(() => {
+
+            clearAlertsBtn.disabled = false;
+
+        });
+
+    });
 
 });

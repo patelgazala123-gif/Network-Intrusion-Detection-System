@@ -827,3 +827,125 @@ a {
     object-fit: cover;
     display: block;
 }
+/* =========================================
+   GLOBAL DARK MODE
+========================================= */
+
+body.dark-mode {
+    --bg: #121a1c;
+    --white: #1b2528;
+
+    --text: #eeeeee;
+    --muted: #aab4b6;
+
+    --border: #2b383b;
+
+    --primary-light: #173d42;
+
+    --shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+    background: var(--bg);
+    color: var(--text);
+}
+
+
+/* Sidebar */
+body.dark-mode .sidebar {
+    background: var(--white);
+    border-color: var(--border);
+}
+
+
+/* Sidebar text */
+body.dark-mode .nav-item {
+    color: #c7d0d2;
+}
+
+body.dark-mode .nav-title {
+    color: #7f8b8e;
+}
+
+body.dark-mode .nav-item:hover {
+    background: var(--primary-light);
+    color: #7de3ea;
+}
+
+
+/* Logo */
+body.dark-mode .logo-text h2 {
+    color: #7de3ea;
+}
+
+body.dark-mode .logo-text span {
+    color: var(--muted);
+}
+
+
+/* Topbar */
+body.dark-mode .topbar {
+    background: rgba(18, 26, 28, 0.94);
+    border-color: var(--border);
+}
+
+
+/* Search */
+body.dark-mode .search-box {
+    background: var(--white);
+    border-color: var(--border);
+}
+
+body.dark-mode .search-box input {
+    color: var(--text);
+}
+
+body.dark-mode .search-shortcut {
+    border-color: var(--border);
+}
+
+
+/* Notification */
+body.dark-mode .notification-btn {
+    background: var(--white);
+    border-color: var(--border);
+    color: #c7d0d2;
+}
+
+
+/* Profile */
+body.dark-mode .profile-info strong {
+    color: var(--text);
+}
+
+
+/* Sidebar bottom */
+body.dark-mode .sidebar-bottom {
+    border-color: var(--border);
+}
+
+
+/* Mobile menu button */
+body.dark-mode .sidebar-toggle {
+    background: var(--white);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+
+/* Floating action buttons */
+body.dark-mode .fab-action {
+    background: var(--white);
+    border-color: var(--border);
+    color: #7de3ea;
+}
+
+
+/* General text */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: var(--text);
+}

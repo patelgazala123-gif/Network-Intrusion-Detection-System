@@ -2,46 +2,78 @@
    REPORTS JAVASCRIPT
 ========================================= */
 
+let activityChart = null;
+let threatChart = null;
+
 
 /* =========================================
-   NETWORK ACTIVITY - LINE GRAPH
+   LOAD REPORT DATA
 ========================================= */
 
-const activityCanvas =
-    document.getElementById("activityChart");
+function loadReports() {
 
-if (activityCanvas) {
+    const period =
+        document.getElementById("reportPeriod").value;
 
-    new Chart(activityCanvas, {
+    let days = 7;
+
+    if (period === "Last 30 Days") {
+        days = 30;
+    }
+
+    if (period === "Last 3 Months") {
+        days = 90;
+    }
+
+    fetch(`/reports-data/?period=${days}`)
+        .then(response => response.json())
+        .then(data => {
+
+            updateActivityChart(data);
+            updateThreatChart(data);
+            updateSecurityScore(data);
+
+        })
+        .catch(error => {
+
+            console.error(
+                "Error loading report data:",
+                error
+            );
+
+        });
+}
+
+
+/* =========================================
+   NETWORK ACTIVITY
+========================================= */
+
+function updateActivityChart(data) {
+
+    const canvas =
+        document.getElementById("activityChart");
+
+    if (!canvas) return;
+
+    if (activityChart) {
+        activityChart.destroy();
+    }
+
+    activityChart = new Chart(canvas, {
 
         type: "line",
 
         data: {
 
-            labels: [
-                "Mon",
-                "Tue",
-                "Wed",
-                "Thu",
-                "Fri",
-                "Sat",
-                "Sun"
-            ],
+            labels: data.traffic_labels,
 
             datasets: [
 
                 {
                     label: "Network Activity",
 
-                    data: [
-                        420,
-                        610,
-                        530,
-                        760,
-                        680,
-                        820,
-                        720
-                    ],
+                    data: data.traffic_values,
 
                     borderWidth: 3,
 
@@ -63,10 +95,6 @@ if (activityCanvas) {
 
             maintainAspectRatio: false,
 
-            animation: {
-                duration: 1200
-            },
-
             plugins: {
 
                 legend: {
@@ -93,21 +121,26 @@ if (activityCanvas) {
                 }
             }
         }
-
     });
 }
 
 
 /* =========================================
-   THREAT SUMMARY - BAR GRAPH
+   THREAT SUMMARY
 ========================================= */
 
-const threatCanvas =
-    document.getElementById("threatChart");
+function updateThreatChart(data) {
 
-if (threatCanvas) {
+    const canvas =
+        document.getElementById("threatChart");
 
-    new Chart(threatCanvas, {
+    if (!canvas) return;
+
+    if (threatChart) {
+        threatChart.destroy();
+    }
+
+    threatChart = new Chart(canvas, {
 
         type: "bar",
 
@@ -124,8 +157,8 @@ if (threatCanvas) {
                     label: "Security Events",
 
                     data: [
-                        34,
-                        27
+                        data.detected,
+                        data.resolved
                     ],
 
                     borderWidth: 0,
@@ -144,10 +177,6 @@ if (threatCanvas) {
 
             maintainAspectRatio: false,
 
-            animation: {
-                duration: 1200
-            },
-
             plugins: {
 
                 legend: {
@@ -174,33 +203,45 @@ if (threatCanvas) {
                 }
             }
         }
-
     });
 }
 
 
 /* =========================================
-   GENERATE REPORT
+   SECURITY SCORE
 ========================================= */
 
-function generateReport() {
+function updateSecurityScore(data) {
 
-    const button =
-        document.getElementById("generateBtn");
+    const score =
+        data.security_score;
 
-    button.innerHTML =
-        '<i class="fas fa-spinner fa-spin"></i> Generating...';
+    const scoreElement =
+        document.getElementById("securityScore");
 
-    button.disabled = true;
+    const statusElement =
+        document.getElementById("scoreStatus");
 
-    setTimeout(function () {
+    const gauge =
+        document.querySelector(".score-gauge");
 
-        button.innerHTML =
-            '<i class="fas fa-check"></i> Report Ready';
+    if (scoreElement) {
+        scoreElement.textContent = score;
+    }
 
-        button.disabled = false;
+    if (statusElement) {
+        statusElement.textContent =
+            data.score_status;
+    }
 
-    }, 1800);
+    if (gauge) {
+
+        gauge.style.background =
+            `conic-gradient(
+                #0b6e79 ${score}%,
+                #e8eef0 ${score}%
+            )`;
+    }
 }
 
 
@@ -215,13 +256,13 @@ if (period) {
 
     period.addEventListener(
         "change",
-        function () {
-
-            console.log(
-                "Selected:",
-                this.value
-            );
-
-        }
+        loadReports
     );
 }
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+loadReports();

@@ -61,14 +61,14 @@ def analyze_packet(packet):
     # =====================================================
 
     if TCP in packet:
-
+        
         data["protocol"] = "TCP"
 
         data["source_port"] = packet[TCP].sport
         data["destination_port"] = packet[TCP].dport
-
+        print("TCP FLAGS:", packet[TCP].flags)
         # SYN flag
-        data["tcp_syn"] = "S" in str(packet[TCP].flags)
+        data["tcp_syn"] = str(packet[TCP].flags) == "S"
 
 
     # =====================================================
